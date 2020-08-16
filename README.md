@@ -1,6 +1,6 @@
 # HSelect [![Build Status](https://travis-ci.com/gptankit/hselect.svg?branch=master)](https://travis-ci.com/gptankit/hselect) [![GoDoc](https://godoc.org/github.com/gptankit/hselect?status.svg)](https://pkg.go.dev/github.com/gptankit/hselect?tab=overview)
 
-**hselect** is a command line tool for selecting an active service among a group of errored and non-errored services (mirrors). It uses harmonic dispatch algorithm (https://github.com/gptankit/harmonic) for service selection and also updates harmonic with service errors if dial fails for the selected service.
+**hselect** is a command line tool for selecting an active service among a group of errored and non-errored services (mirrors). It uses *harmonic* dispatch algorithm (https://github.com/gptankit/harmonic) for service selection and also updates *harmonic* with service errors if dial fails for the selected service. As *harmonic* can adapt to changing error values, *hselect* can thus output a service with maximum probability of connection success.
 
 Here are the steps to use *hselect* - </br>
 
@@ -40,10 +40,26 @@ Connection successful to https://goproxy.io
 https://goproxy.io
 </pre>
 
-Output of *hselect* (when used without **-v**) can also be piped to *curl* or *wget* - 
+Output of *hselect* (when used without **-v**) can also be piped to *curl* or *wget* for further downloads - 
 
 <pre>
-$ sudo hselect -e https://proxy.golang.org,https://goproxy.io,https://gocenter.io | xargs wget
+$ sudo hselect -e https://proxy.golang.org/github.com/spf13/viper/@v/v1.7.1.zip,https://goproxy.io/github.com/spf13/viper/@v/v1.7.1.zip,https://gocenter.io/github.com/spf13/viper/@v/v1.7.1.zip | xargs wget -O viper.zip
+https://gocenter.io/github.com/spf13/viper/@v/v1.7.1.zip | xargs wget -O viper.zip
+--2020-08-16 23:50:35--  https://goproxy.io/github.com/spf13/viper/@v/v1.7.1.zip
+Resolving goproxy.io (goproxy.io)... 119.28.201.50
+Connecting to goproxy.io (goproxy.io)|119.28.201.50|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://goproxy.onetool.net/github.com/spf13/viper/@v/v1.7.1.zip [following]
+--2020-08-16 23:50:36--  https://goproxy.onetool.net/github.com/spf13/viper/@v/v1.7.1.zip
+Resolving goproxy.onetool.net (goproxy.onetool.net)... 122.10.255.108, 124.156.41.23, 122.10.255.106, ...
+Connecting to goproxy.onetool.net (goproxy.onetool.net)|122.10.255.108|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 85905 (84K) [application/octet-stream]
+Saving to: ‘viper.zip’
+
+viper.zip                                    100%[=========================================>]  83.89K  --.-KB/s    in 0.03s
+
+2020-08-16 23:50:37 (2.51 MB/s) - ‘viper.zip’ saved [85905/85905]
 </pre>
 
 Feel free to play around and post feedbacks
